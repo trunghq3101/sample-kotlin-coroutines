@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/kotlin-runcode@1/dist/runcode.min.js" data-selector="code"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div>
+      <button class="btn" onclick="location.href='/'"><i class="fa fa-home"></i> Home</button>
+    </div>
+    <h4>A coroutine promises to return a value: Concurrency for single value - async await.</h4>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+      import kotlin.system.*
+      
+      suspend fun main() = coroutineScope {
+          val time = measureTimeMillis {
+             val one = async {
+                delay(1000L)
+                1
+              }
+              val two = async {
+                delay(1000L)
+                2
+              }
+              println("The answer is ${one.await() + two.await()}")   
+          }
+        println("Completed in $time ms")
+      }
+    </code>
+    <hr/>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+      import kotlin.system.*
+      
+      suspend fun main() = coroutineScope {
+        val time = measureTimeMillis {
+            val one = doOneAsync(this)
+            val two = doTwoAsync(this)
+            println("The answer is ${one.await() + two.await()}")   
+        }
+        println("Completed in $time ms")
+      }
+      
+      fun doOneAsync(scope: CoroutineScope) = scope.async {
+        delay(1000L)
+        1
+      }
+      
+      fun doTwoAsync(scope: CoroutineScope) = scope.async {
+        delay(1000L)
+        2
+      }
+    </code>
+    <hr/>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/kotlin-runcode@1/dist/runcode.min.js" data-selector="code"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div>
+      <button class="btn" onclick="location.href='/'"><i class="fa fa-home"></i> Home</button>
+    </div>
+    <h4>A coroutine inside a coroutine ... and Exception!</h4>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+      import kotlin.system.*
+
+      suspend fun main() = coroutineScope {
+          val parentJob = GlobalScope.launch {
+              val childJobOne = GlobalScope.launch {
+                  throw Exception("Child job One error")
+              }
+              val childJobTwo = GlobalScope.launch {
+                  delay(2000L)
+                  println("Child job Two completed!")
+              }
+              childJobOne.join()
+              childJobTwo.join()
+              println("Parent job completed!")
+          }
+          parentJob.join()
+      }
+    </code>
+    <hr/>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+      import kotlin.system.*
+
+      suspend fun main() = coroutineScope {
+          val parentJob = launch {
+              val childJobOne = launch {
+                  throw Exception("Child job One error")
+              }
+              val childJobTwo = launch {
+                  delay(2000L)
+                  println("Child job Two completed!")
+              }
+              childJobOne.join()
+              childJobTwo.join()
+              println("Parent job completed!")
+          }
+          parentJob.join()
+      }
+    </code>
+  </body>
+</html>
