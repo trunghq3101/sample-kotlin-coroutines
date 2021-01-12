@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h4>A coroutine: Sequential by default</h4>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+    
+      suspend fun main() = coroutineScope {
+          launch {
+              delay(1000L)
+              print("world")
+          }
+          print("Hello ")
+      }
+    </code>
+  </body>
+</html>
