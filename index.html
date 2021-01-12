@@ -8,8 +8,14 @@
 
     <h2>A coroutine: Sequential by default</h2>
     <code data-min-compiler-version="1.1">
-      fun main(name: String) {
-          println("Hello $name")
+      import kotlinx.coroutines.*
+
+      suspend fun main() = coroutineScope {
+          launch {
+              delay(1000L)
+              print("world")
+          }
+          print("Hello ")
       }
     </code>
     
