@@ -11,9 +11,8 @@
     <h4>A coroutine inside a coroutine ... and Exception!</h4>
     <code data-min-compiler-version="1.1">
       import kotlinx.coroutines.*
-      import kotlin.system.*
 
-      suspend fun main() = coroutineScope {
+      fun main() = runBlocking {
           val parentJob = GlobalScope.launch {
               val childJobOne = GlobalScope.launch {
                   throw Exception("Child job One error")
@@ -32,9 +31,8 @@
     <hr/>
     <code data-min-compiler-version="1.1">
       import kotlinx.coroutines.*
-      import kotlin.system.*
 
-      suspend fun main() = coroutineScope {
+      fun main() = runBlocking {
           val parentJob = launch {
               val childJobOne = launch {
                   throw Exception("Child job One error")
@@ -48,6 +46,28 @@
               println("Parent job completed!")
           }
           parentJob.join()
+      }
+    </code>
+    <hr/>
+    <code data-min-compiler-version="1.1">
+      import kotlinx.coroutines.*
+
+      fun main() = runBlocking {
+          val handler = CoroutineExceptionHandler { _, exception ->
+            println("CoroutineExceptionHandler got $exception")
+          }
+          supervisorScope {
+            val childJobOne = launch(handler) {
+              throw Exception("Child job One error")
+            }
+            val childJobTwo = launch() {
+                delay(2000L)
+                println("Child job Two completed!")
+            }
+            childJobOne.join()
+            childJobTwo.join()
+            println("Parent job completed!")
+          }
       }
     </code>
   </body>

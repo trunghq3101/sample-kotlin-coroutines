@@ -13,7 +13,7 @@
       import kotlinx.coroutines.*
       import kotlin.system.*
       
-      suspend fun main() = coroutineScope {
+      fun main() = runBlocking {
           val time = measureTimeMillis {
              val one = async {
                 delay(1000L)
@@ -33,7 +33,7 @@
       import kotlinx.coroutines.*
       import kotlin.system.*
       
-      suspend fun main() = coroutineScope {
+      fun main() = runBlocking {
         val time = measureTimeMillis {
             val one = doOneAsync(this)
             val two = doTwoAsync(this)
